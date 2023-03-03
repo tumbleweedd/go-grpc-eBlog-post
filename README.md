@@ -1,1 +1,6 @@
-# go-grpc-eBlog-post
+ # go-grpc-eBlog-post
+## Repositories
+* https://github.com/tumbleweedd/go-grpc-eBlog-post - Post SVC (gRPC)
+* https://github.com/tumbleweedd/go-grpc-eBlog-user - User SVC (gRPC)
+* https://github.com/tumbleweedd/go-grpc-eBlog-auth - Authentication SVC (gRPC)
+* https://github.com/tumbleweedd/go-grpc-eBlog-api-gateway - API Gateway (HTTP)
