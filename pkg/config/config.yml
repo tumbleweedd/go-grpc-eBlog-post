@@ -1,0 +1,9 @@
+port: ":50053"
+
+db:
+  username: "postgres"
+  host: "localhost"
+  port: "5432"
+  dbname: "eBlog_post"
+  password: "gaga565"
+  sslmode: "disable"
