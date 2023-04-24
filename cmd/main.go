@@ -4,6 +4,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/client"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/pb"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/repository"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/service"
@@ -38,7 +39,8 @@ func main() {
 	fmt.Println("Auth Svc on", viper.GetString("port"))
 
 	r := repository.NewRepository(db)
-	s := service.NewService(r)
+	commentSvc := client.InitCommentServiceClient(viper.GetString("comment_svc_url"))
+	s := service.NewService(r, commentSvc)
 
 	grpcServer := grpc.NewServer()
 

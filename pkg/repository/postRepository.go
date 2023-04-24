@@ -10,6 +10,14 @@ type PostRepository struct {
 	db *sqlx.DB
 }
 
+func (postRepo *PostRepository) DeletePostById(postId int) error {
+	query := fmt.Sprintf(`delete from %s p where p.post_id=$1`, postTable)
+
+	_, err := postRepo.db.Exec(query, postId)
+
+	return err
+}
+
 func (postRepo *PostRepository) CreateNewPost(categoryId int, userId int, post model.PostDTO) error {
 	tx, err := postRepo.db.Begin()
 	if err != nil {

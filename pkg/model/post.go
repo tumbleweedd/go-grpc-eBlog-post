@@ -16,10 +16,13 @@ type PotTag struct {
 	TagId  int `json:"-" db:"tag_id"`
 }
 
+type Comments map[string][]string
+
 type PostDTO struct {
 	Body string `json:"body"`
 	// DateCreation time.Time `json:"date_creation"`
 	Head     string   `json:"title"`
 	Category string   `json:"category"`
 	Tags     []string `json:"tags"`
+	Comments Comments `json:"comments"`
 }

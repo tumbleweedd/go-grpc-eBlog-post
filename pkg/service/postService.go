@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/client"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/model"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/pb"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/repository"
@@ -12,13 +13,19 @@ type PostService struct {
 	postRepo     repository.Post
 	categoryRepo repository.Category
 	tagRepo      repository.Tag
+	commentSvc   client.CommentServiceClient
 }
 
-func NewPostService(postRepo repository.Post, categoryRepo repository.Category, tagRepo repository.Tag) *PostService {
+func NewPostService(
+	postRepo repository.Post,
+	categoryRepo repository.Category,
+	tagRepo repository.Tag,
+	commentSvc client.CommentServiceClient) *PostService {
 	return &PostService{
 		postRepo:     postRepo,
 		categoryRepo: categoryRepo,
 		tagRepo:      tagRepo,
+		commentSvc:   commentSvc,
 	}
 }
 
@@ -77,6 +84,7 @@ func (postService *PostService) GetAllPosts(ctx context.Context, req *pb.GetAllP
 			Head:     post.Head,
 			Category: post.Category,
 			Tags:     post.Tags,
+			Comments: post.Comments,
 		})
 	}
 
@@ -157,13 +165,26 @@ func (postService *PostService) UpdatePost(ctx context.Context, req *pb.UpdatePo
 }
 
 func (postService *PostService) DeletePost(ctx context.Context, req *pb.DeletePostRequest) (*pb.DeletePostResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	postId := req.GetPostId()
+
+	err := postService.postRepo.DeletePostById(int(postId))
+	if err != nil {
+		return &pb.DeletePostResponse{
+			Status: http.StatusInternalServerError,
+			Error:  err.Error(),
+		}, nil
+	}
+
+	return &pb.DeletePostResponse{
+		Status: http.StatusOK,
+	}, nil
 }
 
 func generatePostDTO(posts []model.Post, postService *PostService) ([]model.PostDTO, error) {
 	var postsDTO = make([]model.PostDTO, len(posts), len(posts))
 	var tags []model.Tag
+	var cmnts model.Comments
+	cmnts = make(map[string][]string)
 
 	for index, post := range posts {
 		postsDTO[index].Head = post.Head
@@ -180,6 +201,15 @@ func generatePostDTO(posts []model.Post, postService *PostService) ([]model.Post
 			return nil, err
 		}
 		postsDTO[index].Tags = getTagsInSlice(tags)
+
+		comments, err := postService.commentSvc.GetCommentByPostId(post.Id)
+		if err != nil {
+			return nil, err
+		}
+		for key, value := range comments.Comments {
+			cmnts[key] = value.Body
+		}
+		postsDTO[index].Comments = cmnts
 	}
 
 	return postsDTO, nil

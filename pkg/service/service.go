@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/client"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/pb"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/repository"
 )
@@ -20,8 +21,8 @@ type Service struct {
 	pb.UnsafePostServiceServer
 }
 
-func NewService(r *repository.Repository) *Service {
+func NewService(r *repository.Repository, commentSvc client.CommentServiceClient) *Service {
 	return &Service{
-		Post: NewPostService(r.Post, r.Category, r.Tag),
+		Post: NewPostService(r.Post, r.Category, r.Tag, commentSvc),
 	}
 }

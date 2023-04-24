@@ -13,6 +13,10 @@ service PostService {
   rpc DeletePost(DeletePostRequest) returns (DeletePostResponse) {}
 }
 
+message Comments {
+  repeated string body = 1;
+}
+
 //GetAllPosts
 
 message GetAllPostsRequest {}
@@ -22,6 +26,7 @@ message PostData{
   string head = 2;
   string category = 3;
   repeated string tags = 4;
+  map<string, Comments> comments = 5;
 }
 
 message GetAllPostsResponse {

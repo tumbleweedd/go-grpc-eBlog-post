@@ -10,6 +10,7 @@ type Post interface {
 	GetAllPosts() ([]model.Post, error)
 	GetPostById(id int) (model.Post, error)
 	GetPostsByUserId(userId int) ([]model.Post, error)
+	DeletePostById(postId int) error
 }
 
 type Category interface {

@@ -1,4 +1,5 @@
 port: ":50053"
+comment_svc_url: "localhost:50054"
 
 db:
   username: "postgres"
