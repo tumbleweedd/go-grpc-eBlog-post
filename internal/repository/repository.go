@@ -2,24 +2,24 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/model"
+	model2 "github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/internal/model"
 )
 
 type Post interface {
-	CreateNewPost(categoryId int, userId int, post model.PostDTO) error
-	GetAllPosts() ([]model.Post, error)
-	GetPostById(id int) (model.Post, error)
-	GetPostsByUserId(userId int) ([]model.Post, error)
+	CreateNewPost(categoryId int, userId int, post model2.PostDTO) error
+	GetAllPosts() ([]model2.Post, error)
+	GetPostById(id int) (model2.Post, error)
+	GetPostsByUserId(userId int) ([]model2.Post, error)
 	DeletePostById(postId int) error
 }
 
 type Category interface {
 	GetCategoryIdByName(categoryName string) (int, error)
-	FindCategoryById(categoryId int) (model.Category, error)
+	FindCategoryById(categoryId int) (model2.Category, error)
 }
 
 type Tag interface {
-	GetPostTagsByPostId(postId int) ([]model.Tag, error)
+	GetPostTagsByPostId(postId int) ([]model2.Tag, error)
 }
 
 type Repository struct {

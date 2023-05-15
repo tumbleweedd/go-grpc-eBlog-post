@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/client"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/internal/repository"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/pb"
-	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/repository"
 )
 
 type Post interface {

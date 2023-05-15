@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/client"
-	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/model"
+	model2 "github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/internal/model"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/internal/repository"
 	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/pb"
-	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/repository"
 	"net/http"
 )
 
@@ -38,7 +38,7 @@ func (postService *PostService) CreateNewPost(ctx context.Context, req *pb.Creat
 		}, nil
 	}
 
-	post := model.PostDTO{
+	post := model2.PostDTO{
 		Body:     req.Data.GetBody(),
 		Head:     req.Data.GetHead(),
 		Category: req.Data.GetCategory(),
@@ -180,10 +180,10 @@ func (postService *PostService) DeletePost(ctx context.Context, req *pb.DeletePo
 	}, nil
 }
 
-func generatePostDTO(posts []model.Post, postService *PostService) ([]model.PostDTO, error) {
-	var postsDTO = make([]model.PostDTO, len(posts), len(posts))
-	var tags []model.Tag
-	var cmnts model.Comments
+func generatePostDTO(posts []model2.Post, postService *PostService) ([]model2.PostDTO, error) {
+	var postsDTO = make([]model2.PostDTO, len(posts), len(posts))
+	var tags []model2.Tag
+	var cmnts model2.Comments
 	cmnts = make(map[string][]string)
 
 	for index, post := range posts {
@@ -215,7 +215,7 @@ func generatePostDTO(posts []model.Post, postService *PostService) ([]model.Post
 	return postsDTO, nil
 }
 
-func getTagsInSlice(tags []model.Tag) []string {
+func getTagsInSlice(tags []model2.Tag) []string {
 	var tagInString []string
 	for _, tag := range tags {
 		tagInString = append(tagInString, tag.Name)

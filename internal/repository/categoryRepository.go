@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/pkg/model"
+	"github.com/tumbleweedd/grpc-eBlog/grpc-eBlog-post/internal/model"
 )
 
 type CategoryRepository struct {
